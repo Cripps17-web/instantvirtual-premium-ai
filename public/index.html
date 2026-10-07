@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>instantvirtual.premium ai</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#070b14;color:#f5f7fb}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1100px;margin:auto;padding:0 20px}
+nav{height:72px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #20283a}
+.logo{font-weight:800;font-size:20px}
+.logo span{color:#7c5cff}
+.btn{border:0;border-radius:12px;padding:13px 18px;font-weight:700;cursor:pointer;background:#7c5cff;color:white}
+.hero{text-align:center;padding:80px 0 40px}
+.hero h1{font-size:clamp(40px,7vw,76px);line-height:1;margin:0 0 20px}
+.hero p{max-width:650px;margin:0 auto 28px;color:#aeb8ca;font-size:18px;line-height:1.6}
+.card{background:#0d1320;border:1px solid #20283a;border-radius:20px;padding:26px;margin:20px 0}
+.upload{border:2px dashed #35405a;border-radius:16px;padding:45px;text-align:center;cursor:pointer}
+input[type=file]{display:none}
+.muted{color:#9da8bc}
+.result{white-space:pre-wrap;line-height:1.7;color:#dce3ef}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.stat{padding:22px;border-radius:16px;background:#111827}
+footer{padding:45px 0;color:#7f8aa0;text-align:center}
+.modal{display:none;position:fixed;inset:0;background:#000a;align-items:center;justify-content:center;padding:20px}
+.modal.on{display:flex}
+.modalbox{background:#0d1320;border:1px solid #28324a;border-radius:18px;padding:25px;width:min(520px,100%)}
+.field{width:100%;padding:13px;margin:8px 0;background:#080d17;border:1px solid #2a354d;color:white;border-radius:10px}
+@media(max-width:700px){.grid{grid-template-columns:1fr}.hero{padding-top:55px}}
+</style>
+</head>
+<body>
+
+<nav>
+<div class="wrap" style="display:flex;width:100%;justify-content:space-between;align-items:center">
+<div class="logo">instantvirtual.<span>premium ai</span></div>
+<button class="btn" onclick="show('payment')">Get Premium</button>
+</div>
+</nav>
+
+<main class="wrap">
+<section class="hero">
+<h1>Virtual football analysis,<br><span style="color:#7c5cff">powered by AI.</span></h1>
+<p>Upload your virtual football screenshot and use AI-powered analysis to turn match information into clear, organized insights.</p>
+<button class="btn" onclick="document.getElementById('file').click()">Upload Screenshot</button>
+</section>
+
+<section class="card">
+<h2>Analyze a screenshot</h2>
+<p class="muted">PNG, JPG or WebP • maximum 8 MB</p>
+
+<form id="form">
+<label class="upload" for="file">
+Tap here to choose your screenshot<br>
+<span class="muted">Your analysis will appear below.</span>
+</label>
+<input id="file" type="file" name="image" accept="image/png,image/jpeg,image/webp">
+</form>
+
+<div id="out" class="result" style="margin-top:20px"></div>
+</section>
+
+<section class="grid">
+<div class="stat"><b>Fast</b><p class="muted">Simple screenshot-to-analysis workflow.</p></div>
+<div class="stat"><b>Private</b><p class="muted">Built with a dedicated admin system.</p></div>
+<div class="stat"><b>Premium</b><p class="muted">Ready for paid plans and controlled access.</p></div>
+</section>
+</main>
+
+<footer>© 2026 instantvirtual.premium ai</footer>
+
+<div class="modal" id="payment">
+<div class="modalbox">
+<h2>Premium payment</h2>
+<p>Send your payment via <b>Telecel Cash</b> to:</p>
+
+<div class="card">
+<b style="font-size:22px">0204297600</b><br>
+ERIC INCOOM<br>
+<span class="muted">Telecel</span>
+</div>
+
+<p class="muted">After paying, submit your details below so the admin can verify the payment.</p>
+
+<input class="field" id="pname" placeholder="Your name">
+<input class="field" id="pphone" placeholder="Your phone number">
+<input class="field" id="pamount" placeholder="Amount paid (GHS)">
+<input class="field" id="pref" placeholder="Payment/reference note (optional)">
+
+<button class="btn" onclick="submitPayment()">Submit payment</button>
+<button class="btn" style="background:#222b3e;margin-left:8px" onclick="hide('payment')">Close</button>
+
+<p id="paymsg"></p>
+</div>
+</div>
+
+<script>
+const show=id=>document.getElementById(id).classList.add('on');
+const hide=id=>document.getElementById(id).classList.remove('on');
+
+document.getElementById('file').addEventListener('change',async e=>{
+ const f=e.target.files[0];
+ if(!f)return;
+
+ const out=document.getElementById('out');
+ out.textContent="Uploading and analyzing…";
+
+ const fd=new FormData();
+ fd.append('image',f);
+
+ try{
+  const r=await fetch('/api/analyze',{method:'POST',body:fd});
+  const d=await r.json();
+  out.textContent=d.result||d.error
+ }catch(err){
+  out.textContent="Something went wrong. Please try again."
+ }
+});
+
+async function submitPayment(){
+ const body={
+  name:pname.value,
+  phone:pphone.value,
+  amount:pamount.value,
+  reference:pref.value
+ };
+
+ const r=await fetch('/api/payments',{
+  method:'POST',
+  headers:{'Content-Type':'application/json'},
+  body:JSON.stringify(body)
+ });
+
+ const d=await r.json();
+ paymsg.textContent=d.ok?"Payment submitted for verification.":"Error: "+d.error;
+}
+</script>
+
+</body>
+</html>
