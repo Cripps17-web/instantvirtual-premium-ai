@@ -1,0 +1,25 @@
+<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin — instantvirtual.premium ai</title><style>
+body{font-family:Arial;background:#070b14;color:#fff;margin:0}.wrap{max-width:1100px;margin:auto;padding:25px}
+.card{background:#0d1320;border:1px solid #20283a;border-radius:16px;padding:22px;margin:15px 0}
+input,button,select{padding:12px;border-radius:9px;border:1px solid #303b54;background:#090e18;color:#fff;margin:5px}
+button{cursor:pointer;background:#7c5cff;border:0;font-weight:bold}.hidden{display:none}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+table{width:100%;border-collapse:collapse}td,th{padding:10px;border-bottom:1px solid #20283a;text-align:left}@media(max-width:700px){.grid{grid-template-columns:1fr}table{font-size:12px}}
+</style></head><body><div class="wrap">
+<h1>instantvirtual.premium ai — Admin</h1>
+<div id="login" class="card"><h2>Admin login</h2><input id="u" placeholder="Username"><input id="p" type="password" placeholder="Password"><button onclick="login()">Login</button><p id="err"></p></div>
+<div id="dash" class="hidden">
+<button onclick="logout()">Log out</button>
+<div class="grid"><div class="card"><h2 id="a">0</h2>Analyses</div><div class="card"><h2 id="pay">0</h2>Payments</div><div class="card"><h2 id="pend">0</h2>Pending</div></div>
+<div class="card"><h2>Payments</h2><div id="payments"></div></div>
+<div class="card"><h2>Recent analyses</h2><div id="analyses"></div></div>
+</div></div>
+<script>
+async function login(){let r=await fetch('/api/admin/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:u.value,password:p.value})});let d=await r.json();if(d.ok){login.classList.add('hidden');dash.classList.remove('hidden');load()}else err.textContent=d.error}
+async function logout(){await fetch('/api/admin/logout',{method:'POST'});location.reload()}
+async function load(){let s=await (await fetch('/api/admin/stats')).json();a.textContent=s.analyses;pay.textContent=s.payments;pend.textContent=s.pending;
+let ps=await (await fetch('/api/admin/payments')).json();payments.innerHTML='<table><tr><th>Name</th><th>Phone</th><th>Amount</th><th>Status</th><th>Action</th></tr>'+ps.map(x=>`<tr><td>${x.name}</td><td>${x.phone}</td><td>GHS ${x.amount}</td><td>${x.status}</td><td><button onclick="status(${x.id},'approved')">Approve</button><button onclick="status(${x.id},'rejected')">Reject</button></td></tr>`).join('')+'</table>';
+let an=await (await fetch('/api/admin/analyses')).json();analyses.innerHTML='<table><tr><th>ID</th><th>File</th><th>Date</th></tr>'+an.map(x=>`<tr><td>${x.id}</td><td>${x.filename}</td><td>${x.created_at}</td></tr>`).join('')+'</table>'}
+async function status(id,s){await fetch('/api/admin/payments/'+id+'/status',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({status:s})});load()}
+fetch('/api/admin/me').then(r=>r.json()).then(d=>{if(d.admin){login.classList.add('hidden');dash.classList.remove('hidden');load()}})
+</script></body></html>

@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#070b14">
+<title>instantvirtual.premium ai — Virtual Football Analysis</title>
+<style>
+:root{--bg:#060912;--panel:#0d1320;--panel2:#111827;--line:#202b40;--text:#f7f9fc;--muted:#9aa7bd;--accent:#7c5cff;--accent2:#5b8cff;--good:#25d48a;--warn:#f7c65b}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(circle at 50% -10%,#18203a 0,#060912 42%);color:var(--text)}a{color:inherit;text-decoration:none}.wrap{width:min(1120px,calc(100% - 32px));margin:auto}
+nav{position:sticky;top:0;z-index:20;background:rgba(6,9,18,.84);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.07)}.navin{height:70px;display:flex;align-items:center;justify-content:space-between}.logo{font-weight:900;letter-spacing:-.5px}.logo span{color:#9b83ff}.navlinks{display:flex;gap:22px;color:var(--muted);font-size:14px}.navlinks a:hover{color:white}.btn{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:12px;padding:13px 18px;font-weight:800;cursor:pointer;background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;box-shadow:0 8px 28px rgba(124,92,255,.22)}.btn.secondary{background:#151d2d;box-shadow:none;border:1px solid var(--line)}
+.hero{text-align:center;padding:88px 0 54px}.badge{display:inline-flex;padding:7px 12px;border:1px solid #303c57;background:#10182a;border-radius:999px;color:#b9c5da;font-size:13px;margin-bottom:20px}.hero h1{font-size:clamp(42px,8vw,78px);line-height:.98;letter-spacing:-3px;margin:0 auto 22px;max-width:900px}.gradient{background:linear-gradient(90deg,#fff,#9d8bff,#62a0ff);-webkit-background-clip:text;background-clip:text;color:transparent}.hero p{max-width:690px;margin:0 auto 30px;color:var(--muted);font-size:18px;line-height:1.65}.hero-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.trust{display:flex;justify-content:center;gap:26px;flex-wrap:wrap;color:#8390a8;font-size:13px;margin-top:28px}.trust span:before{content:'✓';color:var(--good);margin-right:7px;font-weight:900}
+.card{background:linear-gradient(180deg,rgba(17,24,39,.96),rgba(10,15,25,.96));border:1px solid var(--line);border-radius:22px;padding:26px;box-shadow:0 18px 55px rgba(0,0,0,.2);margin:20px 0}.section-title{display:flex;justify-content:space-between;gap:15px;align-items:flex-end;margin-bottom:18px}.section-title h2{margin:0;font-size:25px}.muted{color:var(--muted)}.upload{display:block;border:1.5px dashed #3a4966;border-radius:18px;padding:48px 20px;text-align:center;cursor:pointer;background:rgba(124,92,255,.035);transition:.2s}.upload:hover{border-color:#7861dc;background:rgba(124,92,255,.07)}.upload-icon{font-size:36px;margin-bottom:10px}.upload strong{display:block;font-size:17px;margin-bottom:7px}input[type=file]{display:none}
+#fileName{margin-top:12px;color:#c5cee0;font-size:14px}.analyzing{display:none;margin-top:18px;padding:14px;border-radius:12px;background:#0a1020;border:1px solid #26334d;color:#b9c5da}.analyzing.on{display:block}.spinner{display:inline-block;width:15px;height:15px;border:2px solid #46536e;border-top-color:#9b83ff;border-radius:50%;animation:spin .8s linear infinite;vertical-align:-3px;margin-right:8px}@keyframes spin{to{transform:rotate(360deg)}}
+.resultbox{display:none;margin-top:18px;padding:22px;border-radius:18px;border:1px solid #2c3952;background:#080e19}.resultbox.on{display:block}.result-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}.status{font-size:12px;font-weight:800;padding:6px 9px;border-radius:999px;background:rgba(37,212,138,.1);color:#5ee4aa;border:1px solid rgba(37,212,138,.2)}.result{white-space:pre-wrap;line-height:1.75;color:#dce4f1}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:20px 0 54px}.feature{padding:24px;border-radius:18px;background:#0d1320;border:1px solid var(--line)}.feature .ico{font-size:26px}.feature h3{margin:13px 0 7px}.feature p{margin:0;line-height:1.6;color:var(--muted);font-size:14px}
+.pricing{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}.plan{padding:25px;border-radius:18px;border:1px solid var(--line);background:#0d1320}.plan.featured{border-color:#6652c9;box-shadow:0 0 0 1px rgba(124,92,255,.12)}.price{font-size:32px;font-weight:900;margin:10px 0}.plan ul{padding-left:19px;color:var(--muted);line-height:2}.plan li::marker{color:#8e79ff}
+footer{padding:48px 0 65px;color:#707d95;text-align:center;font-size:13px}.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);align-items:center;justify-content:center;padding:18px;z-index:50}.modal.on{display:flex}.modalbox{background:#0d1320;border:1px solid #2a3853;border-radius:20px;padding:24px;width:min(520px,100%);box-shadow:0 25px 80px #000}.field{width:100%;padding:13px;margin:7px 0;background:#080d17;border:1px solid #2a354d;color:white;border-radius:10px;outline:none}.field:focus{border-color:#7962e5}.paycard{padding:17px;border-radius:14px;background:#10192a;border:1px solid #29364f;margin:14px 0}.close{background:#222b3e;box-shadow:none;margin-left:7px}
+@media(max-width:760px){.navlinks{display:none}.hero{padding-top:62px}.hero h1{letter-spacing:-2px}.grid,.pricing{grid-template-columns:1fr}.card{padding:20px}.upload{padding:38px 15px}.section-title{display:block}.section-title .muted{margin-top:6px}}
+</style>
+</head>
+<body>
+<nav><div class="wrap navin"><a class="logo" href="#top">instantvirtual.<span>premium ai</span></a><div class="navlinks"><a href="#analyze">Analyze</a><a href="#how">How it works</a><a href="#plans">Plans</a></div><button class="btn" onclick="show('payment')">Get Premium</button></div></nav>
+
+<main id="top">
+<section class="hero wrap">
+<div class="badge">⚡ Virtual football screenshot analysis</div>
+<h1>Turn match screenshots into <span class="gradient">clear football insights.</span></h1>
+<p>Upload a virtual football screenshot and get an organized analysis of the matches, visible information and prediction markets. Built for a fast mobile experience.</p>
+<div class="hero-actions"><a class="btn" href="#analyze">Analyze a Screenshot</a><button class="btn secondary" onclick="show('payment')">View Premium</button></div>
+<div class="trust"><span>Fast workflow</span><span>Mobile friendly</span><span>Premium access ready</span></div>
+</section>
+
+<section class="wrap card" id="analyze">
+<div class="section-title"><div><h2>Analyze your screenshot</h2><div class="muted">PNG, JPG or WebP · maximum 8 MB</div></div><div class="muted">AI results appear here</div></div>
+<form id="form"><label class="upload" for="file"><div class="upload-icon">📸</div><strong>Tap to choose your screenshot</strong><span class="muted">Upload the match image you want analyzed</span></label><input id="file" type="file" name="image" accept="image/png,image/jpeg,image/webp"></form>
+<div id="fileName"></div><div id="loading" class="analyzing"><span class="spinner"></span>Analyzing your screenshot…</div>
+<div id="resultbox" class="resultbox"><div class="result-head"><strong>Analysis result</strong><span class="status">READY</span></div><div id="out" class="result"></div></div>
+</section>
+
+<section class="wrap" id="how"><div class="section-title"><div><h2>Simple by design</h2><div class="muted">Three steps from screenshot to insight.</div></div></div>
+<div class="grid">
+<div class="feature"><div class="ico">📤</div><h3>1. Upload</h3><p>Select your virtual football screenshot directly from your phone.</p></div>
+<div class="feature"><div class="ico">🧠</div><h3>2. Analyze</h3><p>The analysis engine processes the information visible in the screenshot.</p></div>
+<div class="feature"><div class="ico">📊</div><h3>3. Review</h3><p>Receive a clean, organized result that is easy to read on mobile.</p></div>
+</div></section>
+
+<section class="wrap card" id="plans"><div class="section-title"><div><h2>Choose your access</h2><div class="muted">Premium access can be verified manually while payments are being integrated.</div></div></div>
+<div class="pricing"><div class="plan"><div class="muted">Starter</div><div class="price">Free</div><ul><li>Upload screenshots</li><li>Basic website access</li><li>Mobile-friendly experience</li></ul><button class="btn secondary" onclick="document.getElementById('analyze').scrollIntoView({behavior:'smooth'})">Try it</button></div>
+<div class="plan featured"><div class="muted">Premium</div><div class="price">Get access</div><ul><li>Premium analysis workflow</li><li>Priority access structure</li><li>Payment verification</li></ul><button class="btn" onclick="show('payment')">Get Premium</button></div></div></section>
+</main>
+<footer>© 2026 instantvirtual.premium ai · Virtual football analysis</footer>
+
+<div class="modal" id="payment"><div class="modalbox"><h2>Get Premium</h2><p class="muted">Send your payment via Telecel Cash, then submit the details for verification.</p><div class="paycard"><div class="muted">Telecel Cash</div><b style="font-size:24px">0204297600</b><br>ERIC INCOOM<br><span class="muted">Telecel</span></div><input class="field" id="pname" placeholder="Your name"><input class="field" id="pphone" placeholder="Your phone number"><input class="field" id="pamount" placeholder="Amount paid (GHS)"><input class="field" id="pref" placeholder="Payment/reference note (optional)"><div style="margin-top:8px"><button class="btn" onclick="submitPayment()">Submit payment</button><button class="btn close" onclick="hide('payment')">Close</button></div><p id="paymsg" class="muted"></p></div></div>
+
+<script>
+const show=id=>document.getElementById(id).classList.add('on');
+const hide=id=>document.getElementById(id).classList.remove('on');
+const file=document.getElementById('file');
+file.addEventListener('change',async e=>{
+ const f=e.target.files[0]; if(!f)return;
+ document.getElementById('fileName').textContent=`Selected: ${f.name}`;
+ const loading=document.getElementById('loading'), box=document.getElementById('resultbox'), out=document.getElementById('out');
+ loading.classList.add('on'); box.classList.remove('on'); out.textContent='';
+ const fd=new FormData();fd.append('image',f);
+ try{const r=await fetch('/api/analyze',{method:'POST',body:fd});const d=await r.json();if(!r.ok)throw new Error(d.error||'Analysis failed');out.textContent=d.result;box.classList.add('on');box.scrollIntoView({behavior:'smooth',block:'nearest'});}
+ catch(err){out.textContent=err.message||'Something went wrong. Please try again.';box.classList.add('on');}
+ finally{loading.classList.remove('on');}
+});
+async function submitPayment(){
+ const body={name:pname.value.trim(),phone:pphone.value.trim(),amount:pamount.value.trim(),reference:pref.value.trim()};
+ const r=await fetch('/api/payments',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const d=await r.json();
+ paymsg.textContent=d.ok?'Payment submitted for verification. We will review it from the admin dashboard.':'Error: '+(d.error||'Unable to submit.');
+}
+</script>
+</body></html>
